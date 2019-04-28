@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core'
 import { LogService } from '../services/log/log.service'
 import { RoomService } from '../services/room/room.service'
 import { Room } from '../services/room/room'
+import { SocketioService } from '../services/socketio/socketio.service'
 
 // TODO: 日本語入力後，クリックによってIME確定してもEnterを押す必要がある。
 
@@ -30,7 +31,8 @@ export class InputFieldComponent implements OnInit {
 
   constructor(
       public logService: LogService,
-      public roomService: RoomService
+      public roomService: RoomService,
+      public socketioService: SocketioService
   ) { }
 
   ngOnInit() {
@@ -346,6 +348,19 @@ export class InputFieldComponent implements OnInit {
       self.roomService.remove(name)
     }
 
+    // Socket io join
+    let join = (self, name) => {
+      self.socketioService.connect()
+      self.socketioService.emit('connected', name)
+      self.sendLog('Connected: ' + name)
+    }
+
+    // Socket io send
+    let send = (self, msg) => {
+      self.socketioService.emit('publish', { value: msg })
+      self.sendLog('Send: ' + msg)
+    }
+
     // 一致するコマンドを処理する
     const c = command.split(' ')[0]
     switch (c) {
@@ -383,7 +398,16 @@ export class InputFieldComponent implements OnInit {
         changeRoom(this, command.slice('cd'.length + 1))
         return
       case 'rm':
+        addEffectiveCommand(command)
         removeRoom(this, command.slice('rm'.length + 1))
+        return
+      case 'socket':
+        addEffectiveCommand(command)
+        join(this, command.slice('socket'.length + 1))
+        return
+      case 'send':
+        addEffectiveCommand(command)
+        send(this, command.slice('send'.length + 1))
         return
       default:
         break
