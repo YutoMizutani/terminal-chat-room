@@ -6,6 +6,9 @@
 }
 /* input */
 textarea {
+  border: none;
+  outline: none;
+  resize: none;
   background: #000;
   color: #fff;
   font-family: 'Ubuntu Mono';

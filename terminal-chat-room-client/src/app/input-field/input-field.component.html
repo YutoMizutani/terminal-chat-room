@@ -1,0 +1,22 @@
+<div class="inputArea commandArea">
+  <!-- カレントディレクトリ -->
+  <br>
+  <label class="input">{{ directory }}</label>
+  <!-- 入力エリア(常時非表示・クリックフォーカス・エンターイベント) -->
+  <textarea
+    class="inputField break-all"
+    [(ngModel)]="command"
+    id="focusable"
+    #cmd
+    (keydown)="onKeyDown($event, cmd)"
+    (keyup)="onKeyUp($event, cmd)"
+    autoFocus autoSize
+  ></textarea>
+
+<div>
+  <!-- プロンプト表示 -->
+  <label class="input">(DEBUG) keyCode: </label>
+  <!-- 入力表示 -->
+  <label class="input break-all">{{ keydebug }}</label>
+</div>
+</div>

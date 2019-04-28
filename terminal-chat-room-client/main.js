@@ -9,7 +9,7 @@ function createWindow () {
 
   // load the dist folder from Angular
   win.loadURL(url.format({
-    pathname: path.join(__dirname, 'dist/index.html'),
+    pathname: path.join(__dirname, 'dist/terminal-chat-room-client/index.html'),
     protocol: 'file:',
     slashes: true
   }))
